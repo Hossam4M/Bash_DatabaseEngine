@@ -10,12 +10,16 @@ if [ "$dbName" = "" ]; then
     cd ..;
     . ./EntryPoint.sh
 
-elif [[ $dbName =~ " "* ]]; then
+elif [[ $dbName =~ " "+ ]]; then
     echo " dataBase name can't have spaces";
     cd ..;
     . ./EntryPoint.sh
 
-# elif [[ $dbName =~ " "* ]]; then
+elif [[ $dbName =~ ^[-.+0-9] ]]; then
+    echo " invalid name for dataBase -> it must start with character";
+    cd ..;
+    . ./EntryPoint.sh
+
 else
     check=`ls | grep "^$dbName$"`
     if [ "$check" = "" ]; then
