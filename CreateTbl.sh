@@ -1,6 +1,12 @@
 #! /usr/bin/bash
 
-echo -n "enter the name of table : "
+tblList=($(ls))
+
+if [[ ${#tblList[@]} != 0 ]]; then
+    echo -n "enter the name of table except ( ${tblList[*]} ) : "
+else
+    echo -n "enter the name of table : "
+fi
 read tblName
 
 if [ "$tblName" = "" ]; then
@@ -9,7 +15,12 @@ if [ "$tblName" = "" ]; then
     cd ..;
     . ../OptionDb.sh $1
 
-elif [[ $tblName =~ ^[-.+0-9] ]]; then
+elif [[ $tblName =~ [\!@\#\$%^\&*()-+\.\/] ]]; then
+    echo " table name can't have with special characters";
+    cd ..;
+    . ../OptionDb.sh $1
+
+elif [[ $tblName =~ ^[0-9] ]]; then
     echo " invalid name for table -> it must start with character";
     cd ..;
     . ../OptionDb.sh $1
@@ -24,7 +35,7 @@ else
 
     if [ "$check" = "" ]; then
         touch $tblName;
-        touch metaData_$tblName
+        touch .metaData_$tblName
         echo "table created successfully";
         . ../../CreateDetailTbl.sh $1 $tblName
 

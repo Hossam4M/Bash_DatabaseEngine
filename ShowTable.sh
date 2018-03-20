@@ -3,22 +3,30 @@
 shopt -s extglob
 # LC_COLLATE=C
 
-echo -n "enter the name of table to show : "
-read tblName
+tblList=($(ls))
 
-check=`ls | grep "^$tblName$"`
+if [[ ${#tblList[@]} != 0 ]]; then
+    echo -n "enter the name of table to show from ( ${tblList[*]} ) :  "
+    read tblName
 
-if [ "$check" = "" ]; then
-    echo "this table doesn't exist";
-    cd ..;
-    . ../OptionDb.sh $1
+    check=`ls | grep "^$tblName$"`
 
-elif [ "$check" = "$tblName" ]; then
+    if [ "$check" = "" ]; then
+        echo "this table doesn't exist";
+        cd ..;
+        . ../OptionDb.sh $1
 
-    echo
-    awk -F: '{ print $0 }' $tblName;
-    echo
+    elif [ "$check" = "$tblName" ]; then
 
+        echo
+        awk -F: '{ print $0 }' $tblName;
+        echo
+
+        cd ..;
+        . ../OptionDb.sh $1
+    fi
+else
+    echo -e "\n there is no table to show \n";
     cd ..;
     . ../OptionDb.sh $1
 fi

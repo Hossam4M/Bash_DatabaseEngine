@@ -1,6 +1,8 @@
 #! /usr/bin/bash
 
-echo -n "enter the name of table to drop : "
+tblList=($(ls))
+
+echo -n "enter the name of table to drop from ( ${tblList[*]} ) :  "
 read tblName
 
 check=`ls | grep "^$tblName$"`
@@ -11,7 +13,7 @@ if [ "$check" = "" ]; then
 
 elif [ "$check" = "$tblName" ]; then
     rm $tblName;
-    rm metaData_$tblName;
+    rm .metaData_$tblName;
     echo "table dropped successfully";
     cd ..;
     . ../OptionDb.sh $1

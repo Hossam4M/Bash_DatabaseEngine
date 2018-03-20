@@ -5,7 +5,7 @@ shopt -s extglob
 . ../../functions.sh
 
 qExit="true"
-dataType=`awk -F: '{ if (NR == "'$1'") print $2 }' metaData_$3`
+dataType=`awk -F: '{ if (NR == "'$1'") print $2 }' .metaData_$3`
 
 while [ "$qExit" == "true" ]; do
 

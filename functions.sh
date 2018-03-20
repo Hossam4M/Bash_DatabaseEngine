@@ -96,7 +96,7 @@ function updatePrimary() {
     if [ "$list" = "" ]; then
 
         if [ "$2" = "string" ]; then
-            
+
             if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?0-9])* ]] ; then
 
                 awk -F: ' { if (NR == "'$5'") sub($1,"'$1'") ; print $0 } ' $3 > temp.tmp && mv temp.tmp $3 ;
@@ -134,37 +134,30 @@ function updateNonPrimary() {
 
     else
 
-        list=`awk -F: '{ print $1 }' $3 | grep "^$1$"`
+        if [ "$2" = "string" ]; then
 
-        if [ "$list" = "" ]; then
+            if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?0-9])* ]] ; then
 
-            if [ "$2" = "string" ]; then
+                awk -F: ' { if (NR == "'$5'") sub($"'$4'","'$1'") ; print $0 } ' $3 > temp.tmp && mv temp.tmp $3 ;
+                qExit="false"
 
-                if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?0-9])* ]] ; then
-
-                    awk -F: ' { if (NR == "'$5'") sub($"'$4'","'$1'") ; print $0 } ' $3 > temp.tmp && mv temp.tmp $3 ;
-                    qExit="false"
-
-                else
-                    echo " this field must be string "
-                fi
-
-            elif [ "$2" = "number" ]; then
-
-                if [[ $1 =~ ^[0-9]([0-9])* ]] ; then
-
-                    awk -F: ' { if (NR == "'$5'") sub($"'$4'","'$1'") ; print $0 } ' $3 > temp.tmp && mv temp.tmp $3 ;
-                    qExit="false"
-
-                else
-                    echo " this field must be number "
-                fi
-
+            else
+                echo " this field must be string "
             fi
 
-        else
-            echo " Dublication Error ! This is primary key and must be unique "
+        elif [ "$2" = "number" ]; then
+
+            if [[ $1 =~ ^[0-9]([0-9])* ]] ; then
+
+                awk -F: ' { if (NR == "'$5'") sub($"'$4'","'$1'") ; print $0 } ' $3 > temp.tmp && mv temp.tmp $3 ;
+                qExit="false"
+
+            else
+                echo " this field must be number "
+            fi
+
         fi
+
 
     fi
 

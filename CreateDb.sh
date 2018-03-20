@@ -2,7 +2,13 @@
 
 cd repo
 
-echo -n "enter the name of database : "
+dbList=($(ls))
+
+if [[ ${#dbList[@]} != 0 ]]; then
+    echo -n "enter the name of database except ( ${dbList[*]} ) : "
+else
+    echo -n "enter the name of database : "
+fi
 read dbName
 
 if [ "$dbName" = "" ]; then
@@ -15,7 +21,12 @@ elif [[ $dbName =~ " "+ ]]; then
     cd ..;
     . ./EntryPoint.sh
 
-elif [[ $dbName =~ ^[-.+0-9] ]]; then
+elif [[ $dbName =~ [\!@\#\$%^\&*()-+\.\/] ]]; then
+    echo " dataBase name can't have special characters";
+    cd ..;
+    . ./EntryPoint.sh
+
+elif [[ $dbName =~ ^[0-9] ]]; then
     echo " invalid name for dataBase -> it must start with character";
     cd ..;
     . ./EntryPoint.sh

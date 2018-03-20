@@ -1,15 +1,22 @@
 #! /usr/bin/bash
 
-echo "enter the name of database to drop from ( `ls repo` ) : "
-read dbName
+dbList=($(ls repo))
 
-check=`ls repo | grep "^$dbName$"`
-if [ "$check" = "" ]; then
-    echo "this database doesn't exist";
-    . ./EntryPoint.sh
+if [[ ${#dbList[@]} != 0 ]]; then
+    echo "enter the name of database to drop from ( ${dbList[*]} ) : "
+    read dbName
 
-elif [ "$check" = "$dbName" ]; then
-    rm -R repo/$dbName
-    echo "database dropped successfully";
+    check=`ls repo | grep "^$dbName$"`
+    if [ "$check" = "" ]; then
+        echo "this database doesn't exist";
+        . ./EntryPoint.sh
+
+    elif [ "$check" = "$dbName" ]; then
+        rm -R repo/$dbName
+        echo "database dropped successfully";
+        . ./EntryPoint.sh
+    fi
+else
+    echo -e "\nthere is no database to drop !!!!\n"
     . ./EntryPoint.sh
 fi

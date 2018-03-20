@@ -1,19 +1,19 @@
 #! /usr/bin/bash
 
-
 select choice in "insert new column" "return" ;
 do
     case $REPLY in
-        1 ) check=`cat metaData_$2`
+        1 ) check=`cat .metaData_$2`
             if [ "$check" = "" ]; then
                 echo -n "enter the name of column (PrimaryKey) : " ;
             else
-                echo -n "enter the name of column : " ;
+                colList=($(awk -F: '{ print $1 }' .metaData_$2))
+                echo -n "enter the name of column except ( ${colList[*]} ) : " ;
             fi
 
             read colName
 
-            check=`awk -F: '{ print $1 }' metaData_$2 | grep "^$colName$"`
+            check=`awk -F: '{ print $1 }' .metaData_$2 | grep "^$colName$"`
 
             if [ "$check" = "" ]; then
 
@@ -27,7 +27,7 @@ do
                     esac
                 done
 
-                awk -F: ' { print $0 } END{ print "'$colName:$dataType'" }' metaData_$2 > temp.tmp && mv temp.tmp metaData_$2
+                awk -F: ' { print $0 } END{ print "'$colName:$dataType'" }' .metaData_$2 > temp.tmp && mv temp.tmp .metaData_$2
 
                 check=`cat $2`
                 if [ "$check" = "" ]; then
