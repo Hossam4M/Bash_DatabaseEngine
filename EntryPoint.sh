@@ -1,21 +1,27 @@
 #! /usr/bin/bash
 
-
 check=`ls | grep "^repo$"`
 if [ "$check" = "" ]; then
     mkdir repo
 fi
 
-select choice in "create new database" "use database" "delete database" "exit" ;
-do
-    case $REPLY in
-        1 ) . ./CreateDb.sh
-            ;;
-        2 ) . ./UseDb.sh
-            ;;
-        3 ) . ./DeleteDb.sh
-            ;;
-        4 ) exit
-            ;;
-    esac
-done
+echo -n " enter your SQL statement -> "
+read -a sqlarr
+
+sql=${sqlarr[*]}
+query=`echo $sql | cut -f1 -d" "`
+
+case $query in
+    "use" ) . ./useDb.sh "$sql"
+        ;;
+    "create" ) . ./createDb.sh "$sql"
+        ;;
+    "drop" ) . ./deleteDb.sh "$sql"
+        ;;
+    "exit" ) exit
+        ;;
+    * ) echo -e "\n Error in syntax !!!! \n" ;
+        . ./EntryPoint.sh
+        ;;
+
+esac
