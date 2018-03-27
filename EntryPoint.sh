@@ -18,6 +18,8 @@ case $query in
         ;;
     "drop" ) . ./deleteDb.sh "$sql"
         ;;
+    "show" ) . ./showDb.sh "$sql"
+        ;;
     "exit" ) exit
         ;;
     * ) echo -e "\n Error in syntax !!!! \n" ;

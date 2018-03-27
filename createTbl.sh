@@ -25,12 +25,29 @@ elif [[ $wordNo == 4 ]]; then
         cols=`echo $1 | cut -f4 -d" "`
         coma=`echo $cols | tr -cd ',' | wc -c`+1
         semi=`echo $cols | tr -cd ':' | wc -c`
+        createFlag="true"
+
+        for (( i = 1; i <= $semi; i++ )); do
+            coltype=`echo $cols | cut -f$i -d, | cut -f2 -d:`
+            if [ "$coltype" != "string" -a "$coltype" != "number" ]; then
+                createFlag="false"
+            fi
+        done
 
         if [ "$check" = "" ]; then
-            if [[ $semi == $coma ]]; then
+            if [ "$semi" = "$coma" -a "$createFlag" != "false" ]; then
                 touch $tblName
                 touch .metaData_$tblName
                 awk -F, '{ for(i=1;i<=NF;i++) print $i }' <<< "`echo $cols`" > temp.tmp && mv temp.tmp .metaData_$tblName
+
+                for (( i = 1; i <= $semi; i++ )); do
+                    tableHead+=`echo $cols | cut -f$i -d, | cut -f1 -d:`
+                    if [[ $i != $semi ]]; then
+                        tableHead+=":"
+                    fi
+                done
+
+                awk -F, ' BEGIN{ print "'$tableHead'"} ' > temp.tmp && mv temp.tmp $tblName
                 echo -e "\n table created successfully \n"
             else
                 echo -e "\n Error in syntax !!! \n"

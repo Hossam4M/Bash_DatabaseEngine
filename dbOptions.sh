@@ -23,6 +23,10 @@ case $query in
         ;;
     "insert" ) . ../../insertTbl.sh "$sql"
         ;;
+    "show" ) . ../../showTbl.sh "$sql"
+        ;;
+    "select" ) . ../../selectTbl.sh "$sql"
+        ;;
     "exit" ) exit
         ;;
     * )

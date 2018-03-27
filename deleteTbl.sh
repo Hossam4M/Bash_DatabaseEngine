@@ -6,12 +6,8 @@ if [[ $wordNo == 3 ]]; then
 
     checkType=`echo $1 | cut -f2 -d" "`
 
-    if [ "$checkType" = "database" ]; then
-        # echo "enter"
-        cd ../.. ;
-        . ./deleteDb.sh
 
-    elif [ "$checkType" = "table" ]; then
+    if [ "$checkType" = "table" ]; then
         tblName=`echo $1 | cut -f3 -d" "`
         check=`ls | grep "^$tblName$"`
 

@@ -15,19 +15,19 @@ if [[ $wordNo == 6 ]]; then
 
         tblName=`echo $1 | cut -f3 -d" "`
         check=`ls | grep "^$tblName$"`
-        cols=`echo $1 | cut -f4 -d" " | tr -cd ',' | wc -c`+1
-        values=`echo $1 | cut -f6 -d" " | tr -cd ',' | wc -c`+1
+        let cols=`echo $1 | cut -f4 -d" " | tr -cd ',' | wc -c`+1
+        let values=`echo $1 | cut -f6 -d" " | tr -cd ',' | wc -c`+1
 
-        if [ "$check" = "" ]; then
-            if [[ $semi == $coma ]]; then
-                . ../../insertCheck.sh
+        if [ "$check" != "" ]; then
+            if [[ $cols == $values ]]; then
+                . ../../insertCheck.sh "$1"
             else
                 echo -e "\n fields must match columns \n"
             fi
 
 
         else
-            echo -e "\n this table is already created !!! \n"
+            echo -e "\n this table doesn't exist !!! \n"
         fi
     else
         echo -e "\n Error in syntax !!! \n";
