@@ -28,7 +28,7 @@ function checkDataTypePrimary() {
 
         if [ "$2" = "string" ]; then
 
-            if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?0-9])* ]] ; then
+            if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?,\\0-9])*$ ]] ; then
 
                 awk -F: ' { print $0 } END{ print "'$1'" }' $3 > temp.tmp && mv temp.tmp $3 ;
                 qflag="false"
@@ -64,7 +64,7 @@ function checkDataTypeNonPrimary() {
 
         if [ "$2" = "string" ]; then
 
-            if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?0-9])* ]] ; then
+            if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?,\\0-9])*$ ]] ; then
                 awk -F: ' { if (NR == "'$4'") sub(/$/,"':$1'") ; print $0 } ' $3 > temp.tmp && mv temp.tmp $3 ;
                 qflag="false"
             else
@@ -97,7 +97,7 @@ function updatePrimary() {
 
         if [ "$2" = "string" ]; then
 
-            if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?0-9])* ]] ; then
+            if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?,\\0-9])*$ ]] ; then
 
                 awk -F: ' { if (NR == "'$5'") sub($1,"'$1'") ; print $0 } ' $3 > temp.tmp && mv temp.tmp $3 ;
                 qExit="false"
@@ -136,7 +136,7 @@ function updateNonPrimary() {
 
         if [ "$2" = "string" ]; then
 
-            if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?0-9])* ]] ; then
+            if [[ $1 =~ ^[a-zA-Z]([a-zA-Z./?,\\0-9])*$ ]] ; then
 
                 awk -F: ' { if (NR == "'$5'") sub($"'$4'","'$1'") ; print $0 } ' $3 > temp.tmp && mv temp.tmp $3 ;
                 qExit="false"

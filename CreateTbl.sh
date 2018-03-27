@@ -15,7 +15,7 @@ if [ "$tblName" = "" ]; then
     cd ..;
     . ../OptionDb.sh $1
 
-elif [[ $tblName =~ [\!@\#\$%^\&*()-+\.\/] ]]; then
+elif [[ $tblName =~ [-\!@\#\$%^\&*()-+\.\/] ]]; then
     echo " table name can't have with special characters";
     cd ..;
     . ../OptionDb.sh $1
@@ -37,6 +37,7 @@ else
         touch $tblName;
         touch .metaData_$tblName
         echo "table created successfully";
+        inputFlag="false"
         . ../../CreateDetailTbl.sh $1 $tblName
 
     elif [ "$check" = "$tblName" ]; then

@@ -1,11 +1,22 @@
 #! /usr/bin/bash
 
-select choice in "insert new column" "return" ;
+if [ "$inputFlag" = "false" ]; then
+    arrOptions=("insert new column")
+else
+    arrOptions=("insert new column,return")
+fi
+
+old_IFS="$IFS";
+IFS=","
+
+select choice in ${arrOptions[*]} ;
 do
+    IFS="${old_IFS}"
     case $REPLY in
         1 ) check=`cat .metaData_$2`
             if [ "$check" = "" ]; then
                 echo -n "enter the name of column (PrimaryKey) : " ;
+                inputFlag="true"
             else
                 colList=($(awk -F: '{ print $1 }' .metaData_$2))
                 echo -n "enter the name of column except ( ${colList[*]} ) : " ;
